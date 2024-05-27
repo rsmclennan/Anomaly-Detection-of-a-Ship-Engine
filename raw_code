@@ -10,3 +10,472 @@ import plotly.express as px
 import plotly.graph_objects as go
 import plotly.figure_factory as ff
 from plotly.subplots import make_subplots
+
+data = pd.read_csv('https://raw.githubusercontent.com/fourthrevlxd/cam_dsb/main/engine.csv')
+data
+
+# Inspect the dataframe
+data.info()
+# Indication of no missing values. Column names: 'Engine rpm', 'Lub oil pressure', 'Fuel pressure', 'Coolant pressure', 'lub oil temp', 'Coolant temp' data exists as either integer or float values.
+
+# Change column names to Python usable names
+new_column_names = {
+    'Engine rpm': 'engine_rpm',
+    'Lub oil pressure': 'oil_pressure',
+    'Fuel pressure': 'fuel_pressure',
+    'Coolant pressure': 'coolant_pressure',
+    'lub oil temp': 'oil_temp',
+    'Coolant temp': 'coolant_temp'
+}
+data = data.rename(columns=new_column_names)
+
+# Show descriptive statistics of the dataset
+data.describe()
+
+# Key statistics for Engine RPM
+engine_rpm_mean = data['engine_rpm'].mean()
+engine_rpm_median = data['engine_rpm'].median()
+engine_rpm_max = data['engine_rpm'].max()
+engine_rpm_array = np.array(data['engine_rpm'])
+engine_95th = np.percentile(engine_rpm_array, 95)
+
+# Key statistics for Oil pressure
+oil_pressure_mean = data['oil_pressure'].mean()
+oil_pressure_median = data['oil_pressure'].median()
+oil_pressure_max = data['oil_pressure'].max()
+oil_pressure_array = np.array(data['oil_pressure'])
+oil_pressure_95th = np.percentile(oil_pressure_array, 95)
+
+# Key statistics for Fuel pressure
+fuel_pressure_mean = data['fuel_pressure'].mean()
+fuel_pressure_median = data['fuel_pressure'].median()
+fuel_pressure_max = data['fuel_pressure'].max()
+fuel_pressure_array = np.array(data['fuel_pressure'])
+fuel_pressure_95th = np.percentile(fuel_pressure_array, 95)
+
+# Key statistics for Coolant pressure
+coolant_pressure_mean = data['coolant_pressure'].mean()
+coolant_pressure_median = data['coolant_pressure'].median()
+coolant_pressure_max = data['coolant_pressure'].max()
+coolant_pressure_array = np.array(data['coolant_pressure'])
+coolant_pressure_95th = np.percentile(coolant_pressure_array, 95)
+
+# Key statistics for Oil temp
+oil_temp_mean = data['oil_temp'].mean()
+oil_temp_median = data['oil_temp'].median()
+oil_temp_max = data['oil_temp'].max()
+oil_temp_array = np.array(data['oil_temp'])
+oil_temp_95th = np.percentile(oil_temp_array, 95)
+
+# Key statistics for Coolant temp
+coolant_temp_mean = data['coolant_temp'].mean()
+coolant_temp_median = data['coolant_temp'].median()
+coolant_temp_max = data['coolant_temp'].max()
+coolant_temp_array = np.array(data['coolant_temp'])
+coolant_temp_95th = np.percentile(coolant_temp_array, 95)
+
+print(f'The engine RPM mean is {round(engine_rpm_mean, 2)} and the median is {round(int(engine_rpm_median), 2)}. The top 5% of the data is found between {engine_95th} and {engine_rpm_max}')
+print(f'The oil pressure mean is {round(oil_pressure_mean, 2)} and the median is {round(oil_pressure_median, 2)}. The top 5% of the data is found between {round(oil_pressure_95th, 2)} and {round(oil_pressure_max, 2)}')
+print(f'The fuel pressure mean is {round(fuel_pressure_mean, 2)} and the median is {round(fuel_pressure_median, 2)}. The top 5% of the data is found between {round(fuel_pressure_95th, 2)} and {round(fuel_pressure_max, 2)}')
+print(f'The coolant pressure mean is {round(coolant_pressure_mean, 2)} and the median is {round(coolant_pressure_median, 2)}. The top 5% of the data is found between {round(coolant_pressure_95th, 2)} and {round(coolant_pressure_max, 2)}')
+print(f'The oil temperature mean is {round(oil_temp_mean, 2)} and the median is {round(oil_temp_median, 2)}. The top 5% of the data is found between {round(oil_temp_95th, 2)} and {round(oil_temp_max, 2)}')
+print(f'The coolant temperature mean is {round(coolant_temp_mean, 2)} and the median is {round(coolant_temp_median, 2)}. The top 5% of the data is found between {round(coolant_temp_95th, 2)} and {round(coolant_temp_max, 2)}')
+
+
+# Visualise the numerical data with histograms and boxplots
+
+fig = make_subplots(rows=2, cols=3, subplot_titles=('Engine RPM', 'Lubrication oil pressure', 'Fuel pressure', 'Coolant pressure', 'Lubrication oil temp', 'Coolant temp'))
+fig.add_trace(go.Histogram(x=data['engine_rpm'], name='RPM'), row=1, col=1)
+fig.add_trace(go.Histogram(x=data['oil_pressure'], name='Oil pressure'), row=1, col=2)
+fig.add_trace(go.Histogram(x=data['fuel_pressure'], name='Fuel pressure'), row=1, col=3)
+fig.add_trace(go.Histogram(x=data['coolant_pressure'], name='Coolant pressure'), row=2, col=1)
+fig.add_trace(go.Histogram(x=data['oil_temp'], name='Oil temp'), row=2, col=2)
+fig.add_trace(go.Histogram(x=data['coolant_temp'], name='Coolant temp'), row=2, col=3)
+
+fig.update_layout(height=800, width=1200, title_text='Distribution of numerical Data')
+fig.show()
+
+fig = make_subplots(rows=2, cols=3, subplot_titles=('Engine RPM', 'Lubrication oil pressure', 'Fuel pressure', 'Coolant pressure', 'Lubrication oil temp', 'Coolant temp'))
+fig.add_trace(go.Box(x=data['engine_rpm'], name='RPM'), row=1, col=1)
+fig.add_trace(go.Box(x=data['oil_pressure'], name='Oil pressure'), row=1, col=2)
+fig.add_trace(go.Box(x=data['fuel_pressure'], name='Fuel pressure'), row=1, col=3)
+fig.add_trace(go.Box(x=data['coolant_pressure'], name='Coolant pressure'), row=2, col=1)
+fig.add_trace(go.Box(x=data['oil_temp'], name='Oil temp'), row=2, col=2)
+fig.add_trace(go.Box(x=data['coolant_temp'], name='Coolant temp'), row=2, col=3)
+
+fig.update_layout(height=800, width=1600, title_text='Distribution of numerical Data')
+fig.show()
+
+# Using the IQR method to determine outliers and anomalies
+
+# Calculate the IQR values and store in a dictionary
+quartiles = {}
+
+for column in data:
+  q1 = round(data[column].quantile(0.25), 2)
+  q3 = round(data[column].quantile(0.75), 2)
+  iqr = round((q3 - q1), 2)
+  quartiles[f'{column}_q1'] = q1
+  quartiles[f'{column}_q3'] = q3
+  quartiles[f'{column}_iqr'] = iqr
+  print(f'For {column}: the Q1 is {q1}, the Q3 is {q3} and the IQR is {iqr}.')
+
+for key, value in quartiles.items():
+  print(f'{key}: {value}')
+
+# Create the upper and lower limits for engine RPM column
+lower_engine = quartiles['engine_rpm_q1'] - 1.5 * quartiles['engine_rpm_iqr']
+upper_engine = quartiles['engine_rpm_q3'] + 1.5 * quartiles['engine_rpm_iqr']
+print(f'The upper limit is: {upper_engine}\nThe lower limit is: {lower_engine}')
+
+# Using the IQR, generate a list of indeces of outliers and create a new column
+# indicating if it is an outlier (1) or not (0)
+engine_anomalies = data[(data['engine_rpm'] > upper_engine) | (data['engine_rpm'] < lower_engine)].index
+data['engine_rpm_outlier'] = 0
+data.loc[engine_anomalies, 'engine_rpm_outlier'] = 1
+
+# Create the upper and lower limits for oil_pressure column
+lower_oil_pressure = quartiles['oil_pressure_q1'] - 1.5 * quartiles['oil_pressure_iqr']
+upper_oil_pressure = quartiles['oil_pressure_q3'] + 1.5 * quartiles['oil_pressure_iqr']
+print(f'The upper limit is: {upper_oil_pressure}\nThe lower limit is: {lower_oil_pressure}')
+
+# Using the IQR, generate a list of indeces of outliers and create a new column
+# indicating if it is an outlier (1) or not (0)
+oil_pressure_anomalies = data[(data['oil_pressure'] > upper_oil_pressure) | (data['oil_pressure'] < lower_oil_pressure)].index
+data['oil_pressure_outlier'] = 0
+data.loc[oil_pressure_anomalies, 'oil_pressure_outlier'] = 1
+
+# Create the upper and lower limits for fuel_pressure column
+lower_fuel_pressure = quartiles['fuel_pressure_q1'] - 1.5 * quartiles['fuel_pressure_iqr']
+upper_fuel_pressure = quartiles['fuel_pressure_q3'] + 1.5 * quartiles['fuel_pressure_iqr']
+print(f'The upper limit is: {upper_fuel_pressure}\nThe lower limit is: {lower_fuel_pressure}')
+
+# Using the IQR, generate a list of indeces of outliers and create a new column
+# indicating if it is an outlier (1) or not (0)
+fuel_pressure_anomalies = data[(data['fuel_pressure'] > upper_fuel_pressure) | (data['fuel_pressure'] < lower_fuel_pressure)].index
+data['fuel_pressure_outlier'] = 0
+data.loc[fuel_pressure_anomalies, 'fuel_pressure_outlier'] = 1
+
+# Create the upper and lower limits for coolant_pressure column
+lower_coolant_pressure = quartiles['coolant_pressure_q1'] - 1.5 * quartiles['coolant_pressure_iqr']
+upper_coolant_pressure = quartiles['coolant_pressure_q3'] + 1.5 * quartiles['coolant_pressure_iqr']
+print(f'The upper limit is: {upper_coolant_pressure}\nThe lower limit is: {lower_coolant_pressure}')
+
+# Using the IQR, generate a list of indeces of outliers and create a new column
+# indicating if it is an outlier (1) or not (0)
+coolant_pressure_anomalies = data[(data['coolant_pressure'] > upper_coolant_pressure) | (data['coolant_pressure'] < lower_coolant_pressure)].index
+data['coolant_pressure_outlier'] = 0
+data.loc[coolant_pressure_anomalies, 'coolant_pressure_outlier'] = 1
+
+# Create the upper and lower limits for oil_temp column
+lower_oil_temp = quartiles['oil_temp_q1'] - 1.5 * quartiles['oil_temp_iqr']
+upper_oil_temp = quartiles['oil_temp_q3'] + 1.5 * quartiles['oil_temp_iqr']
+print(f'The upper limit is: {upper_oil_temp}\nThe lower limit is: {lower_oil_temp}')
+
+# Using the IQR, generate a list of indeces of outliers and create a new column
+# indicating if it is an outlier (1) or not (0)
+oil_temp_anomalies = data[(data['oil_temp'] > upper_oil_temp) | (data['oil_temp'] < lower_oil_temp)].index
+data['oil_temp_outlier'] = 0
+data.loc[oil_temp_anomalies, 'oil_temp_outlier'] = 1
+
+# Create the upper and lower limits for coolant_temp column
+lower_coolant_temp = quartiles['coolant_temp_q1'] - 1.5 * quartiles['coolant_temp_iqr']
+upper_coolant_temp = quartiles['coolant_temp_q3'] + 1.5 * quartiles['coolant_temp_iqr']
+print(f'The upper limit is: {upper_coolant_temp}\nThe lower limit is: {lower_coolant_temp}')
+
+# Using the IQR, generate a list of indeces of outliers and create a new column
+# indicating if it is an outlier (1) or not (0)
+coolant_temp_anomalies = data[(data['coolant_temp'] > upper_coolant_temp) | (data['coolant_temp'] < lower_coolant_temp)].index
+data['coolant_temp_outlier'] = 0
+data.loc[coolant_temp_anomalies, 'coolant_temp_outlier'] = 1
+
+# Sanity check that all data is different in each new column
+print(data['engine_rpm_outlier'].mean())
+print(data['oil_pressure_outlier'].mean())
+print(data['fuel_pressure_outlier'].mean())
+print(data['oil_temp_outlier'].mean())
+print(data['coolant_pressure_outlier'].mean())
+print(data['coolant_temp_outlier'].mean())
+
+coolant_outlier_df = data[data['coolant_temp_outlier'] == 1]
+coolant_outlier_df
+
+# Create two new columns for >= 3, >=2 and 6 outliers
+data['>=3_outliers'] = 0
+data['>=2_outliers'] = 0
+data['6_outliers'] = 0
+
+for index, row in data.iterrows():
+  if (row['engine_rpm_outlier'] + row['oil_pressure_outlier'] + row['fuel_pressure_outlier'] + row['oil_temp_outlier'] + row['coolant_pressure_outlier'] + row['coolant_temp_outlier']) == 6:
+        data.at[index, '6_outliers'] = 1
+  elif (row['engine_rpm_outlier'] + row['oil_pressure_outlier'] + row['fuel_pressure_outlier'] + row['oil_temp_outlier'] + row['coolant_pressure_outlier'] + row['coolant_temp_outlier']) >= 3:
+        data.at[index, '6_outliers'] = 0
+        data.at[index, '>=3_outliers'] = 1
+  elif (row['engine_rpm_outlier'] + row['oil_pressure_outlier'] + row['fuel_pressure_outlier'] + row['oil_temp_outlier'] + row['coolant_pressure_outlier'] + row['coolant_temp_outlier']) >= 2:
+        data.at[index, '6_outliers'] = 0
+        data.at[index, '>=3_outliers'] = 0
+        data.at[index, '>=2_outliers'] = 1
+  else:
+    data.at[index, '>=2_outliers'] = 0
+
+# Create a column for anomaly class (all outliers = 2, >=3 outliers = 1, <3 outliers = 0)
+data['anomaly_class'] = 0
+for index, row in data.iterrows():
+  if (row['6_outliers']) == 1:
+    data.at[index, 'anomaly_class'] = 2
+  if (row['>=3_outliers']) == 1:
+    data.at[index, 'anomaly_class'] = 1
+  else:
+    data.at[index, 'anomaly_class'] = 0
+
+y_target = data['anomaly_class']
+data
+
+# View the data of >=3 outliers 
+outliers_df = data[data['>=3_outliers'] == 1]
+outliers_df
+
+#View the data of >=2 outliers
+outliers_df_2 = data[data['>=2_outliers'] == 1]
+outliers_df_2
+
+# Machine learning methods
+
+# One-class SVM
+# Import the OneClassSVM and StandardScaler modules
+from sklearn.svm import OneClassSVM
+from sklearn.decomposition import PCA
+from sklearn.manifold import TSNE
+from sklearn.preprocessing import StandardScaler
+from sklearn.feature_selection import mutual_info_classif
+
+ocSVM_df = data.copy()
+ocSVM_df.drop(columns=['engine_rpm_outlier', 'oil_pressure_outlier',
+                      'fuel_pressure_outlier', 'coolant_pressure_outlier',
+                      'oil_temp_outlier', 'coolant_temp_outlier',
+                      'anomaly_class', '>=3_outliers', '>=2_outliers'], axis=1, inplace=True)
+
+# Set the X and y variables
+X = ocSVM_df.drop(columns=['6_outliers'])
+y = ocSVM_df['6_outliers']
+
+# Scale the dataset to improve model performance
+scaler = StandardScaler()
+X_normalised = scaler.fit_transform(X)
+
+# Start ocSVM with 2-dimension PCA output
+model = OneClassSVM(kernel='rbf', gamma=0.5, nu=0.05)
+model.fit(X_normalised)
+
+# Calculate predicted target variables
+y_pred = model.predict(X_normalised)
+print(y_pred)
+#anomalies are -1
+
+# Run PCA on the data to allow for graphical visualisation
+PCA_model = PCA(n_components=2)
+PCA_data = PCA_model.fit_transform(X_normalised)
+
+PCA_df = pd.DataFrame(PCA_data, columns=(['Feature 1', 'Feature 2']))
+PCA_df['anomaly_pred'] = y_pred
+
+# define function to plot PCA data
+def plot_embedding(X, title, y_subset, hue):
+  plt.figure(figsize=(10,8))
+  sns.scatterplot(x=X[:, 0],
+              y=X[:, 1],
+              hue=hue, data=PCA_df)
+  plt.xlabel('Component 1')
+  plt.ylabel('Component 2')
+  plt.title(title)
+  plt.grid=True
+  plt.show
+
+plot_embedding(PCA_data, 'PCA of Ship engine data. gamma=0.5, nu=0.05', y_pred, 'anomaly_pred')
+
+# Repeat this model with various variables of gamma and nu
+
+model_2 = OneClassSVM(kernel='rbf', gamma=0.8, nu=0.01)
+model_2.fit(X_normalised)
+
+# Calculate predicted target variables
+y_pred_2 = model_2.predict(X_normalised)
+#anomalies are -1
+
+PCA_df['anomaly_pred_2'] = y_pred_2
+
+plot_embedding(PCA_data, 'PCA of Ship engine data, gamma=0.8, nu=0.01', y_pred_2, 'anomaly_pred_2')
+
+model_3 = OneClassSVM(kernel='rbf', gamma=0.2, nu=0.01)
+model_3.fit(X_normalised)
+
+# Calculate predicted target variables
+y_pred_3 = model_3.predict(X_normalised)
+#anomalies are -1
+
+PCA_df['anomaly_pred_3'] = y_pred_3
+
+plot_embedding(PCA_data, 'PCA of Ship engine data. gamma=0.2, nu=0.01', y_pred_3, 'anomaly_pred_3')
+
+model_4 = OneClassSVM(kernel='rbf', gamma=0.2, nu=0.05)
+model_4.fit(X_normalised)
+
+# Calculate predicted target variables
+y_pred_4 = model_4.predict(X_normalised)
+#anomalies are -1
+
+PCA_df['anomaly_pred_4'] = y_pred_4
+
+plot_embedding(PCA_data, 'PCA of Ship engine data. gamma=0.2, nu=0.05', y_pred_4, 'anomaly_pred_4')
+
+model_5 = OneClassSVM(kernel='rbf', gamma=0.5, nu=0.01)
+model_5.fit(X_normalised)
+
+# Calculate predicted target variables
+y_pred_5 = model_5.predict(X_normalised)
+#anomalies are -1
+
+PCA_df['anomaly_pred_5'] = y_pred_5
+
+plot_embedding(PCA_data, 'PCA of Ship engine data. gamma=0.5, nu=0.01', y_pred_5, 'anomaly_pred_5')
+
+# Change the value of anamalies from -1 to 0 to allow for mean to be calculated
+new_value = 0
+
+cols_to_change = ['anomaly_pred', 'anomaly_pred_2', 'anomaly_pred_3', 'anomaly_pred_4', 'anomaly_pred_5']
+
+PCA_df[cols_to_change] = np.where(PCA_df[cols_to_change] == -1, new_value, PCA_df[cols_to_change])
+
+# Calculate the mean of each anomaly column to determine best model
+for column in cols_to_change:
+  print(f'The mean of {column} is {PCA_df[column].mean()}')
+
+# Predicted anomalies are within the 1-5% remit for model 3: gamma=0.2, nu=0.01 and model 5: gamma=0.5, nu=0.1. For a more careful model, we will use model 5, predicting ~3% anomalies
+
+PCA_df.drop(columns=['anomaly_pred', 'anomaly_pred_2', 'anomaly_pred_3', 'anomaly_pred_4'], axis=1, inplace=True)
+PCA_df
+# This is the final reduced dimension dataframe with anomaly predictions by one-class SVM
+
+# Isolation Forest
+
+# Check the dataframe is original and does not contain the one-class SVM predictions
+data
+
+# Create a copy of the dataframe to manipulate and perform isolation forest method
+isoforest_df = data.copy()
+isoforest_df.drop(columns=['engine_rpm_outlier', 'oil_pressure_outlier',
+                      'fuel_pressure_outlier', 'coolant_pressure_outlier',
+                      'oil_temp_outlier', 'coolant_temp_outlier',
+                      '>=3_outliers', '6_outliers'], axis=1, inplace=True)
+
+iso_forest = IsolationForest(n_estimators=100, contamination=0.05, random_state=42)
+iso_forest.fit(isoforest_df)
+
+scores_pred = iso_forest.decision_function(isoforest_df)
+print(scores_pred)
+
+y_pred = iso_forest.predict(isoforest_df)
+
+isoforest_df['anomaly'] = y_pred
+
+# Plot the visualisation of the isolation forest model
+plt.figure(figsize=(10,8))
+plt.scatter(isoforest_df[isoforest_df.anomaly == 1].iloc[:, 0],
+            isoforest_df[isoforest_df.anomaly == 1].iloc[:, 1],
+            c='blue', s=20, label='Normal data')
+plt.scatter(isoforest_df[isoforest_df.anomaly == -1].iloc[:, 0],
+            isoforest_df[isoforest_df.anomaly == -1].iloc[:, 1],
+            c='red', s=30, label='Predicted Anomalies')
+# Add title, labels, and legend.
+plt.title("Isolation Forest on Ship Engine data set, 5% contamination", fontsize=20)
+plt.xlabel('Feature 1', fontsize=16)
+plt.ylabel('Feature 2', fontsize=16)
+plt.legend()
+
+# View plot.
+plt.show()
+
+# the above plot only takes into account 2 features (2 dimensions) when plotting anomalies. We need to look at the lower-dimensional features (e.g. t-SNE/PCA) to fully grasp the isolation forest anomaly detection method
+
+# take the PCA reduced data to manipulate for isolation forest technique
+PCA_IF_df = pd.DataFrame(PCA_data, columns=['Feature 1', 'Feature 2'])
+
+from sklearn.ensemble import IsolationForest
+
+# Mute warnings.
+import warnings
+warnings.filterwarnings('ignore')
+
+iso_forest = IsolationForest(n_estimators=100, contamination=0.05, random_state=42)
+iso_forest.fit(PCA_IF_df)
+
+scores_pred = iso_forest.decision_function(PCA_IF_df)
+print(scores_pred)
+
+y_pred = iso_forest.predict(PCA_IF_df)
+y_pred
+
+# Add in columns to the dataframe of anomaly and class 
+PCA_IF_df['anomaly'] = y_pred
+PCA_IF_df['anomaly_class'] = y_target
+PCA_IF_df
+
+# Extract just the anomalies to compare 
+only_anomalies = PCA_IF_df[PCA_IF_df.anomaly == -1]
+print(only_anomalies.shape)
+only_anomalies
+
+# Plot the datapoints, labeled by class of anomaly and normal vs anomaly
+class_dictionary = dict({0: 'Normal', 1: 'Warning', 2: 'Danger'})
+markers = ['.', '^','x',]
+plt.figure(figsize=(10,8))
+for class_value in range(3):
+    plt.scatter(PCA_IF_df[PCA_IF_df['anomaly_class'] == class_value].iloc[:, 0],
+                PCA_IF_df[PCA_IF_df['anomaly_class'] == class_value].iloc[:, 1],
+                label=class_dictionary.get(class_value, f'Class {class_value}'),
+                marker=markers[class_value])
+plt.scatter(PCA_IF_df[PCA_IF_df.anomaly == -1].iloc[:, 0],
+            PCA_IF_df[PCA_IF_df.anomaly == -1].iloc[:, 1],
+            c='red', marker='.', label='Predicted Anomalies')
+# Add title, labels, and legend.
+plt.title("Isolation Forest on Ship Engine data set, 5% contamination", fontsize=20)
+plt.xlabel('Feature 1', fontsize=16)
+plt.ylabel('Feature 2', fontsize=16)
+plt.legend()
+
+# View plot.
+plt.show()
+
+# Repeat with different contamination rates
+PCA_IF_df_2 = pd.DataFrame(PCA_data, columns=['Feature 1', 'Feature 2'])
+
+iso_forest_2 = IsolationForest(n_estimators=100, contamination=0.01, random_state=42)
+iso_forest_2.fit(PCA_data)
+
+scores_pred = iso_forest_2.decision_function(PCA_IF_df_2)
+print(scores_pred)
+
+y_pred = iso_forest_2.predict(PCA_IF_df_2)
+
+PCA_IF_df_2['anomaly'] = y_pred
+
+only_anomalies_2 = PCA_IF_df_2[PCA_IF_df_2.anomaly == -1]
+print(only_anomalies_2.shape)
+
+plt.figure(figsize=(10,8))
+for class_value in range(3):
+    plt.scatter(PCA_IF_df[PCA_IF_df['anomaly_class'] == class_value].iloc[:, 0],
+                PCA_IF_df[PCA_IF_df['anomaly_class'] == class_value].iloc[:, 1],
+                label=class_dictionary.get(class_value, f'Class {class_value}'),
+                marker=markers[class_value])
+plt.scatter(PCA_IF_df_2[PCA_IF_df_2.anomaly == -1].iloc[:, 0],
+            PCA_IF_df_2[PCA_IF_df_2.anomaly == -1].iloc[:, 1],
+            c='red', marker='.', label='Predicted Anomalies')
+# Add title, labels, and legend.
+plt.title("Isolation Forest on Ship Engine data set, 1% contamination", fontsize=20)
+plt.xlabel('Feature 1', fontsize=16)
+plt.ylabel('Feature 2', fontsize=16)
+plt.legend()
+
+# View plot.
+plt.show()
